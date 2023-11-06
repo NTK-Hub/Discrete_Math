@@ -31,42 +31,28 @@ bool **getRelationByCondition(bool (*func)(int, int), int departureAreaSize, int
     return res;
 }
 
-void updateBetween(bool **A, bool **B, int maxRows, int maxCols) {
+void updateBetween(bool **A, int maxRows, int maxCols) {
     // Изменяем размеры матрицы A до maxRows x maxCols
     for (int i = 0; i < maxRows; i++) {
+        A[i] = (bool *) realloc(A[i], maxCols * sizeof(bool));
         for (int j = 0; j < maxCols; j++) {
-            if (i >= A[i] || j >= A[i]) {
-                A[i] = (bool *) realloc(A[i], maxCols * sizeof(bool));
+            if (j >= maxCols) {
                 A[i][j] = 0; // Заполняем новые элементы нулями
             }
         }
     }
 
+    // Освобождаем лишние строки в матрице A
+    for (int i = maxRows; i < maxRows; i++) {
+        free(A[i]);
+    }
+
     // Добавляем новые строки к матрице A, если необходимо
-    for (int i = maxRows; i < A[i]; i++) {
-        A = (bool **) realloc(A, (maxRows + 1) * sizeof(bool *));
+    A = (bool **) realloc(A, maxRows * sizeof(bool *));
+    for (int i = maxRows; i < maxRows; i++) {
         A[i] = (bool *) malloc(maxCols * sizeof(bool));
         for (int j = 0; j < maxCols; j++) {
             A[i][j] = 0; // Заполняем новые строки нулями
-        }
-    }
-
-    // Изменяем размеры матрицы B до maxRows x maxCols
-    for (int i = 0; i < maxRows; i++) {
-        for (int j = 0; j < maxCols; j++) {
-            if (i >= B[i] || j >= B[i]) {
-                B[i] = (bool *) realloc(B[i], maxCols * sizeof(bool));
-                B[i][j] = 0; // Заполняем новые элементы нулями
-            }
-        }
-    }
-
-    // Добавляем новые строки к матрице B, если необходимо
-    for (int i = maxRows; i < B[i]; i++) {
-        B = (bool **) realloc(B, (maxRows + 1) * sizeof(bool *));
-        B[i] = (bool *) malloc(maxCols * sizeof(bool));
-        for (int j = 0; j < maxCols; j++) {
-            B[i][j] = 0; // Заполняем новые строки нулями
         }
     }
 }
@@ -97,7 +83,8 @@ int updateToSquare(bool **A, int maxRows, int maxCols) {
 
 bool inclusionOperation(bool **A, bool **B, int maxRows, int maxCols) {
     // Обновляем размеры матриц A и B до одинаковых
-    updateBetween(A, B, maxRows, maxCols);
+    updateBetween(A, maxRows, maxCols);
+    updateBetween(B, maxRows, maxCols);
 
     // Проверяем, что каждый элемент A равен 1, если соответствующий элемент B равен 0
     for (int i = 0; i < maxRows; i++) {
@@ -111,7 +98,8 @@ bool inclusionOperation(bool **A, bool **B, int maxRows, int maxCols) {
 
 bool equalityOperation(bool **A, bool **B, int maxRows, int maxCols) {
     // Обновляем размеры матриц A и B до одинаковых
-    updateBetween(A, B, maxRows, maxCols);
+    updateBetween(A, maxRows, maxCols);
+    updateBetween(B, maxRows, maxCols);
 
     // Проверяем, что каждый элемент A равен соответствующему элементу B
     for (int i = 0; i < maxRows; i++) {
@@ -125,7 +113,8 @@ bool equalityOperation(bool **A, bool **B, int maxRows, int maxCols) {
 
 bool strictInclusionOperation(bool **A, bool **B, int maxRows, int maxCols) {
     // Обновляем размеры матриц A и B до одинаковых
-    updateBetween(A, B, maxRows, maxCols);
+    updateBetween(A, maxRows, maxCols);
+    updateBetween(B, maxRows, maxCols);
     bool flag = false;
 
     // Проверяем, что каждый элемент A равен 1, если соответствующий элемент B равен 0,
@@ -143,7 +132,8 @@ bool strictInclusionOperation(bool **A, bool **B, int maxRows, int maxCols) {
 
 bool **unionOperation(bool **A, bool **B, int maxRows, int maxCols) {
     // Обновляем размеры матриц A и B до одинаковых
-    updateBetween(A, B, maxRows, maxCols);
+    updateBetween(A, maxRows, maxCols);
+    updateBetween(B, maxRows, maxCols);
 
     // Создаем новую матрицу C
     int maxMetric = maxRows > maxCols ? maxRows : maxCols;
@@ -160,7 +150,8 @@ bool **unionOperation(bool **A, bool **B, int maxRows, int maxCols) {
 
 bool **intersectionOperation(bool **A, bool **B, int maxRows, int maxCols) {
     // Обновляем размеры матриц A и B до одинаковых
-    updateBetween(A, B, maxRows, maxCols);
+    updateBetween(A, maxRows, maxCols);
+    updateBetween(B, maxRows, maxCols);
 
     // Создаем новую матрицу C
     int maxMetric = maxRows > maxCols ? maxRows : maxCols;
@@ -177,7 +168,8 @@ bool **intersectionOperation(bool **A, bool **B, int maxRows, int maxCols) {
 
 bool **differenceOperation(bool **A, bool **B, int maxRows, int maxCols) {
     // Обновляем размеры матриц A и B до одинаковых
-    updateBetween(A, B, maxRows, maxCols);
+    updateBetween(A, maxRows, maxCols);
+    updateBetween(B, maxRows, maxCols);
 
     // Создаем новую матрицу C
     int maxMetric = maxRows > maxCols ? maxRows : maxCols;
@@ -194,7 +186,8 @@ bool **differenceOperation(bool **A, bool **B, int maxRows, int maxCols) {
 
 bool **symmetricDifferenceOperation(bool **A, bool **B, int maxRows, int maxCols) {
     // Обновляем размеры матриц A и B до одинаковых
-    updateBetween(A, B, maxRows, maxCols);
+    updateBetween(A, maxRows, maxCols);
+    updateBetween(B, maxRows, maxCols);
 
     // Создаем новую матрицу C
     int maxMetric = maxRows > maxCols ? maxRows : maxCols;
@@ -243,7 +236,8 @@ bool **inversionOperation(bool **A, int maxRows, int maxCols) {
 
 bool **compositionOperation(bool **A, bool **B, int maxRows, int maxCols) {
     // Обновляем размеры матриц A и B до одинаковых
-    updateBetween(A, B, maxRows, maxCols);
+    updateBetween(A, maxRows, maxCols);
+    updateBetween(B, maxRows, maxCols);
 
     // Получаем максимальный размер матрицы
     int maxMetric1 = updateToSquare(A, maxRows, maxCols);

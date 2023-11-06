@@ -27,7 +27,7 @@ void printRelation(const bool **relation, int departureAreaSize, int arrivalArea
 bool **getRelationByCondition(bool (*func)(int, int), int departureAreaSize, int arrivalAreaSize);
 
 // Функция для обновления размеров матрицы A и B до одинаковых размеров
-void updateBetween(bool **A, bool **B, int maxRows, int maxCols);
+void updateBetween(bool **A, int maxRows, int maxCols);
 
 // Функция для обновления матрицы A до квадратной формы и возврата максимального размера
 int updateToSquare(bool **A, int maxRows, int maxCols);
