@@ -1,5 +1,20 @@
 #include "../../libs/alg/alg.h"
 
+bool conditionA(int x, int y) {
+    // Условие A: (x, y) | x ∈ N и y ∈ N и x < 11 и y < 11 и (x > y или y > 7)
+    return x < 11 && y < 11 && (x > y || y > 7);
+}
+
+bool conditionB(int x, int y) {
+    // Условие B: (x, y) | x ∈ N и y ∈ N и x < 11 и y < 11 и 10x + y кратно 3
+    return x < 11 && y < 11 && (10 * x + y) % 3 == 0;
+}
+
+bool conditionC(int x, int y) {
+    // Условие C: (x, y) | x ∈ N и y ∈ N и x < 11 и y < 11 и x - чётное и y - нечётное
+    return x < 11 && y < 11 && x % 2 == 0 && y % 2 != 0;
+}
+
 int main() {
     // Устанавливаем кодировку вывода в UTF-8 для корректного отображения
     SetConsoleOutputCP(CP_UTF8);
